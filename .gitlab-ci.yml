@@ -1,0 +1,83 @@
+image: node:11.13.0-alpine
+
+stages:
+  - test
+  - build
+  - deploy
+
+before_script:
+  - mkdir -p /react/src/gitlab.global.dish.com/${CI_PROJECT_NAMESPACE}
+  - cp -r ${CI_PROJECT_DIR} /react/src/gitlab.global.dish.com/${CI_PROJECT_PATH}
+  - cd /react/src/gitlab.global.dish.com/${CI_PROJECT_PATH}
+  - pwd
+
+variables:
+  MODULE_NAME: "iota-parkifi-web"
+  DOCKER_TLS_CERTDIR: ""
+
+tests:
+  stage: test
+  before_script:
+    - apk add git
+  script:
+    - npm install
+    - npm run formatting:check
+    - npm run test:coverage
+  tags:
+    - iot-pathfinders
+
+dev_docker_build:
+  stage: build
+  image: docker:18.06
+  services:
+    - docker:dind
+  before_script:
+    - apk add py2-pip
+    - pip install awscli
+  script:
+    - rm .env
+    - sed -e "s+@TORAN_API+${DEV_TORAN_PRIVATE_HOST}+g" deploy/nginx-template.jq > nginx.conf
+    - $(aws ecr get-login --no-include-email)
+    - docker build --tag ${ECR_REGISTRY}/${ECR_IMAGE_NAME}:${CI_PIPELINE_IID} .
+      --build-arg built_at=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+      --build-arg commit_hash=${CI_COMMIT_SHA}
+      --build-arg version=${CI_PIPELINE_IID}
+    - docker push ${ECR_REGISTRY}/${ECR_IMAGE_NAME}:${CI_PIPELINE_IID}
+  except:
+    - development
+    - release
+    - master
+  tags:
+    - iot-pathfinders
+
+dev_deploy:
+  stage: deploy
+  image: node:11.13.0-alpine
+  environment:
+    name: development
+    url: https://parkifi-dev.dishtv.technology
+  before_script:
+    - apk add jq
+    - apk add py2-pip
+    - pip install awscli
+  script:
+    - echo jq -n --arg IMAGE "${ECR_REGISTRY}/${ECR_IMAGE_NAME}:${CI_PIPELINE_IID}" --arg SYSLOG_ADDRESS "${DEV_SYSLOG_ADDRESS}" -f deploy/template.jq
+    - jq -n
+      --arg IMAGE "${ECR_REGISTRY}/${ECR_IMAGE_NAME}:${CI_PIPELINE_IID}"
+      --arg SYSLOG_ADDRESS "${DEV_SYSLOG_ADDRESS}"
+      -f deploy/template.jq > task.json
+    - aws ecs register-task-definition --cli-input-json file://task.json > output.json
+    - cat output.json
+    - REVISION=$(jq .taskDefinition.revision output.json)
+    - echo "Registered ECS task definition ${CI_PROJECT_NAME} revision ${REVISION}"
+    - aws ecs describe-clusters --cluster ${DEV_ECS_CLUSTER_NAME}
+    - echo "aws ecs update-service --cluster ${DEV_ECS_CLUSTER_NAME} --service ${CI_PROJECT_NAME} --task-definition ${CI_PROJECT_NAME}:${REVISION}"
+    - aws ecs update-service --cluster ${DEV_ECS_CLUSTER_NAME}
+      --service ${CI_PROJECT_NAME}
+      --task-definition ${CI_PROJECT_NAME}:${REVISION}
+  except:
+    - development
+    - release
+    - master
+  tags:
+  - iot-pathfinders

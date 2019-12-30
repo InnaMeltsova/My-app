@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+
+const exec = require('child_process').execSync;
+const PROTECTED_BRANCHES = [{pattern: 'master', full: true}, {pattern: 'develop', full: true}, {pattern: /^release-*/, full: false}];
+
+const branchName = exec('git rev-parse --abbrev-ref HEAD', { encoding: 'utf-8' }).split('\n')[0].trim();
+
+/**
+ * exit process with status 1 (ERR) if current branch one of PROTECTED_BRANCHES
+ * @param currentBranch
+ * @returns {function(*): undefined}
+ */
+const exitIfProtectedBranch = currentBranch => branchObj => {
+    if((branchObj.full && branchObj.pattern === currentBranch) || (!branchObj.full && currentBranch.match(branchObj.pattern))) {
+        console.log(`Branch "${currentBranch}" is protected`)
+        process.exit(1)
+    }
+}
+
+PROTECTED_BRANCHES.forEach(exitIfProtectedBranch(branchName));
+
+process.exit(0);

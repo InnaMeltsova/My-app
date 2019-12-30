@@ -1,0 +1,67 @@
+{
+  "name": "check-ingredients",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "webpack-dev-server --hot",
+    "build": "rm -rf ./dist && webpack --progress --color",
+    "eslint:check": "eslint src -c .eslintrc.json --ext .jsx,.js",
+    "eslint:fix": "eslint src -c .eslintrc.json --ext .jsx,.js --fix",
+    "formatting:fix": "prettier --write 'src/**/*.{js,jsx,json}'",
+    "formatting:check": "prettier --list-different 'src/**/*.{js,jsx,json}'",
+    "test": " jest --env=jsdom",
+    "test:dev": "npm run test -- --watchAll",
+    "test:coverage": "npm test -- --collectCoverage --watchAll=false"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.6.0",
+    "@material-ui/core": "^4.3.3",
+    "@material-ui/icons": "^4.2.1",
+    "@material-ui/styles": "^4.3.3",
+    "classnames": "^2.2.6",
+    "connected-react-router": "^6.4.0",
+    "history": "^4.9.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.2",
+    "react-redux": "^6.0.0",
+    "react-router": "^5.0.1",
+    "react-router-dom": "^4.3.1",
+    "react-router-redux": "^4.0.8",
+    "redux": "^4.0.3",
+    "redux-saga": "^1.0.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.0",
+    "@babel/plugin-transform-runtime": "^7.6.0",
+    "@babel/preset-env": "^7.6.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.3",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-import": "^1.12.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-polyfill": "^6.26.0",
+    "compression-webpack-plugin": "^1.1.11",
+    "copy-webpack-plugin": "^4.6.0",
+    "css-loader": "^0.28.11",
+    "dotenv": "^8.1.0",
+    "file-loader": "^1.1.11",
+    "html-webpack-plugin": "^3.2.0",
+    "prettier": "^1.18.2",
+    "style-loader": "^0.20.3",
+    "url-loader": "^1.0.1",
+    "webpack": "^4.20.2",
+    "webpack-bundle-analyzer": "^2.9.1",
+    "webpack-cli": "^3.1.1",
+    "webpack-dev-server": "^3.1.10",
+    "webpack-merge": "^4.1.1"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}

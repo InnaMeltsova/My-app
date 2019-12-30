@@ -1,0 +1,30 @@
+{
+  "parser":"babel-eslint",
+  "extends": ["prettier", "prettier/react"],
+  "plugins": ["react", "prettier"],
+  "rules": {
+    "prettier/prettier": ["error"],
+    "no-undef":"warn",
+    "no-shadow":"warn",
+    "no-duplicate-case":"warn",
+    "no-nested-ternary":"warn",
+    "no-case-declarations":"warn",
+    "no-underscore-dangle":"warn",
+    "default-case":"warn",
+    "consistent-return":"warn",
+    "react/prop-types":"warn",
+    "react/display-name":"warn",
+    "react/jsx-boolean-value":"warn",
+    "react/prefer-stateless-function":"warn"
+  },
+  "env": {
+    "browser": true
+  },
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "./webpack/webpack.common.js"
+      }
+    }
+  }
+}

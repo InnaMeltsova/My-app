@@ -1,0 +1,6 @@
+dist
+node_modules
+deploy
+coverage
+githooks
+webpack.config.js
