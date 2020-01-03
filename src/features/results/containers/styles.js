@@ -15,23 +15,8 @@ const styles = theme => ({
     position: 'absolute',
     left: '44%'
   },
-  btnBorder: {
-    border: '2px solid #20A8D3',
-    borderRadius: '50%',
-    marginTop: '20%',
-  },
-  startButton: {
-    width: 50,
-    height: 50,
-    borderRadius: '50%',
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.primary.contrastText,
+  done: {
     fontWeight: 'bold',
-    margin: 2,
-    outline: 'none',
-  },
-  canvas: {
-    display: 'none'
   },
   output: {
     position: 'absolute',
