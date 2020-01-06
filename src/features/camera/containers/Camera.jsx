@@ -74,7 +74,7 @@ export class Camera extends Component {
           <img className={classes.photo} ref={ref => this.photoRef = ref} />
         </Grid>
         <Grid container className={classes.bottomNavWrap}>
-          <NavBar/>
+          <NavBar />
         </Grid>
       </Grid>
     )

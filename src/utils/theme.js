@@ -29,7 +29,7 @@ export const theme = createMuiTheme({
       contrastText: '#000',
     },
     color: {
-      grey1: '#909498',
+      grey1: '#f1f1f1',
       grey2: '#9C9E9F',
       grey3: '#d8d8d8',
       grey4: '#3D4245',
