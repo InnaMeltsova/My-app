@@ -19,14 +19,14 @@ export class Results extends Component {
   }
 
   render() {
-    const { classes, photoSrc } = this.props;
+    const { classes, photoSrc, history } = this.props;
 
     return (
       <Grid container direction="column" alignItems="center">
         <Grid className={classes.arrowBack}>
           <div className={classes.wrap}>
             <div>
-              <ArrowBackIosOutlined/>
+              <ArrowBackIosOutlined onClick={() => history.push('/camera')} />
             </div>
             <div className={classes.photoText}>
               Photo

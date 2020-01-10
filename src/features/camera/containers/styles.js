@@ -30,6 +30,9 @@ const styles = theme => ({
     margin: 2,
     outline: 'none',
   },
+  // video: {
+  //   width: '100%'
+  // },
   canvas: {
     display: 'none'
   },
@@ -39,7 +42,7 @@ const styles = theme => ({
     width: '100%'
   },
   photo: {
-    width: '100%',
+    // width: '100%',
     height: 400
   },
   bottomNavWrap: {

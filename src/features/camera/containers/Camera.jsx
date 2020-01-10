@@ -5,9 +5,9 @@ import { Grid, withStyles } from '@material-ui/core';
 import { FlashAutoOutlined, FlashOnOutlined, FlashOffOutlined } from '@material-ui/icons';
 import { connect } from 'react-redux';
 import { savePhoto } from '@root/store/common/actions';
+import NavBar from '@root/components/navbar';
 
 import styles from './styles';
-import NavBar from '@root/components/navbar';
 
 export class Camera extends Component {
   componentDidMount() {
@@ -38,20 +38,20 @@ export class Camera extends Component {
     const photo = this.photoRef;
     const canvas = this.canvasRef;
     const context = canvas.getContext('2d');
-    context.drawImage(video, 0, 0, 375, 400);
+    context.drawImage(video, 0, 0, 300, 120);
 
     const data = canvas.toDataURL('image/png');
     photo.setAttribute('src', data);
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, history } = this.props;
 
     return (
       <Grid container direction="column" alignItems="center">
         <Grid className={classes.arrowBack}>
           <div className={classes.wrap}>
-            <div>
+            <div onClick={() => history.push('/')}>
             Cancel
             </div>
             <div className={classes.photoText}>
